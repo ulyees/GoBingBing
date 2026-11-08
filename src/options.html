@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>GoBingBing 设置</title>
+    <link rel="stylesheet" href="options.css" />
+  </head>
+  <body>
+    <div class="page">
+      <header class="hero">
+        <div class="brand">
+          <img src="../icons/icon48.png" alt="" width="44" height="44" />
+          <div>
+            <h1>GoBingBing</h1>
+            <p>某个搜索引擎打不开时，把请求交给下一个能用的引擎。</p>
+          </div>
+        </div>
+        <div class="hero-actions">
+          <span id="status" class="status" role="status" aria-live="polite"></span>
+          <button id="save" class="primary" type="button">保存设置</button>
+        </div>
+      </header>
+
+      <section class="card">
+        <div class="card-head">
+          <h2>基础</h2>
+          <p>自动切换的总开关与通知行为。</p>
+        </div>
+
+        <div class="setting-list">
+          <label class="setting">
+            <span>
+              <strong>启用自动切换</strong>
+              <em>关闭后只保留手动“切换”按钮，扩展不会自动跳转。</em>
+            </span>
+            <input id="enabled" type="checkbox" class="toggle" />
+          </label>
+
+          <label class="setting">
+            <span>
+              <strong>切换时显示系统通知</strong>
+              <em>例如“google.com 无法访问，已切换到 cn.bing.com”。</em>
+            </span>
+            <input id="notify-on-redirect" type="checkbox" class="toggle" />
+          </label>
+
+          <label class="setting">
+            <span>
+              <strong>中止切换时提醒</strong>
+              <em>当来源与目标都无法访问、为避免来回跳转而停止时会提示。</em>
+            </span>
+            <input id="notify-on-blocked" type="checkbox" class="toggle" />
+          </label>
+
+          <label class="setting">
+            <span>
+              <strong>在工具栏图标上显示标记</strong>
+              <em>发生自动切换时显示 ⇄，中止时显示 !。</em>
+            </span>
+            <input id="show-badge" type="checkbox" class="toggle" />
+          </label>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="card-head">
+          <h2>弹窗连通性检测</h2>
+          <p>
+            每次打开弹窗时，探测每条规则里<strong>来源域名</strong>（不是替换目标）的延迟，
+            并用箭头显示这条规则当前是否会触发切换。
+          </p>
+        </div>
+
+        <div class="setting-list">
+          <label class="setting">
+            <span>
+              <strong>打开弹窗时检测来源域名</strong>
+              <em>关闭后不发起任何探测，规则只显示静态信息与图标。</em>
+            </span>
+            <input id="probe-on-open" type="checkbox" class="toggle" />
+          </label>
+        </div>
+
+        <label class="field field-inline">
+          <span>单次检测超时</span>
+          <select id="probe-timeout">
+            <option value="auto">自动（按上次延迟）</option>
+            <option value="2000">2 秒</option>
+            <option value="4000">4 秒</option>
+            <option value="8000">8 秒</option>
+            <option value="12000">12 秒</option>
+          </select>
+        </label>
+        <p class="field-note">自动模式会参考该域名上次成功时的延迟，在 1.5–8 秒之间调整。</p>
+      </section>
+
+      <section class="card">
+        <div class="card-head">
+          <h2>切换规则</h2>
+          <p>
+            从上到下匹配，命中第一条即生效。来源域名支持 <code>*</code> 通配，
+            例如 <code>google.*</code> 会匹配 google.com、google.com.hk 等。
+          </p>
+        </div>
+
+        <div id="rules" class="rules"></div>
+
+        <button id="add-rule" class="ghost" type="button">+ 新增规则</button>
+      </section>
+
+      <section class="card">
+        <div class="card-head">
+          <h2>规则预览</h2>
+          <p>粘贴一个网址，查看它会被切换到哪个地址。</p>
+        </div>
+
+        <div class="preview-row">
+          <input
+            id="preview-url"
+            type="url"
+            inputmode="url"
+            placeholder="https://www.google.com/search?q=deepseek"
+            spellcheck="false"
+          />
+          <button id="preview-btn" class="ghost" type="button">预览</button>
+        </div>
+        <p id="preview-result" class="preview-result">尚未预览。</p>
+      </section>
+
+      <section class="card">
+        <details>
+          <summary>高级选项</summary>
+
+          <div class="advanced-grid">
+            <label class="field">
+              <span>重复事件抑制（毫秒）</span>
+              <input id="cooldown" type="number" min="500" max="60000" step="100" />
+              <em>同一个失败在这么短的时间内只处理一次。</em>
+            </label>
+
+            <label class="field">
+              <span>单个标签页最多连续跳转次数</span>
+              <input id="max-redirects" type="number" min="1" max="10" step="1" />
+              <em>超过后停止切换，避免 A⇄B 死循环。</em>
+            </label>
+          </div>
+
+          <label class="setting">
+            <span>
+              <strong>导航前连通性预检</strong>
+              <em>
+                在访问受规则管理的站点前先探测是否可达，失败时立刻切换（需要授予对应站点权限）。
+                默认关闭：Google 比较慢但能打开时可能被误判。
+              </em>
+            </span>
+            <input id="preflight" type="checkbox" class="toggle" />
+          </label>
+
+          <label class="field field-inline">
+            <span>预检超时（毫秒）</span>
+            <input id="preflight-timeout" type="number" min="800" max="15000" step="100" />
+          </label>
+
+          <div class="grant-row">
+            <button id="grant" class="ghost small" type="button">授权规则中的站点</button>
+            <p class="field-note">
+              预检需要读取来源站点；授权后也会顺便缓存站点图标。不授权不影响弹窗里的延迟检测。
+            </p>
+          </div>
+        </details>
+      </section>
+
+      <section class="card">
+        <div class="card-head">
+          <h2>配置备份</h2>
+          <p>规则以 JSON 保存，可导出后在其它设备导入。</p>
+        </div>
+        <div class="button-row">
+          <button id="export" class="ghost" type="button">导出配置</button>
+          <button id="import" class="ghost" type="button">导入配置</button>
+          <button id="reset" class="danger" type="button">恢复默认</button>
+          <input id="import-file" type="file" accept="application/json,.json" hidden />
+        </div>
+      </section>
+
+      <footer>
+        <span>GoBingBing <span id="version"></span></span>
+        <span>
+          <a href="https://github.com/ulyees/GoBingBing" target="_blank" rel="noreferrer">GitHub</a>
+          · Chrome / Edge · Manifest V3
+        </span>
+      </footer>
+    </div>
+
+    <script type="module" src="options.js"></script>
+  </body>
+</html>

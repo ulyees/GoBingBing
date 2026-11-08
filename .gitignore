@@ -1,0 +1,23 @@
+# OS / editor noise
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/
+
+# Local build and packaging output
+dist/
+*.zip
+*.crx
+*.pem
+*.log
+
+# Node tooling (the extension itself has no runtime dependencies)
+node_modules/
+npm-debug.log*
+
+# Python tooling for icon generation
+__pycache__/
+*.pyc
+.venv/
+venv/

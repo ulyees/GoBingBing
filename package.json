@@ -1,0 +1,29 @@
+{
+  "name": "gobingbing",
+  "version": "2.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Chrome/Edge extension that fails over from unreachable search sources to Bing, with popup latency probes and per-rule icons.",
+  "keywords": [
+    "chrome-extension",
+    "edge-extension",
+    "manifest-v3",
+    "bing",
+    "failover"
+  ],
+  "homepage": "https://github.com/ulyees/GoBingBing#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ulyees/GoBingBing.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ulyees/GoBingBing/issues"
+  },
+  "license": "MIT",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "test": "node --test"
+  }
+}

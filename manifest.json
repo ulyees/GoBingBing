@@ -1,0 +1,33 @@
+{
+  "manifest_version": 3,
+  "name": "GoBingBing — 搜索故障转移",
+  "version": "2.0.0",
+  "description": "Google 打不开时自动改用 cn.bing.com；cn.bing.com 打不开时改用 bing.com。弹窗会检测来源域名延迟，并用图标和箭头展示每条规则。",
+  "minimum_chrome_version": "102",
+  "icons": {
+    "16": "icons/icon16.png",
+    "32": "icons/icon32.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "permissions": ["webNavigation", "storage", "notifications", "alarms"],
+  "optional_host_permissions": ["https://*/*"],
+  "background": {
+    "service_worker": "src/background.js",
+    "type": "module"
+  },
+  "action": {
+    "default_title": "GoBingBing",
+    "default_popup": "src/popup.html",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "32": "icons/icon32.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  },
+  "options_ui": {
+    "page": "src/options.html",
+    "open_in_tab": true
+  }
+}
